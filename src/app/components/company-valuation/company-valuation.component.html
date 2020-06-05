@@ -1,0 +1,68 @@
+<div class="container my-5">
+    <h1 class="text-center mb-5">Company Valuation Application</h1>
+    <form #searchForm="ngForm">
+        <div class="row mb-3">
+            <div class="col-md-3 col-sm-4 text-center d-block">
+                <label>Search Company Here</label>
+                <input name="Search" placeholder="Search Name" class="form-control" type="text" [(ngModel)]="searchModel.query" required />
+            </div>
+            <div class="col-md-3 col-sm-4 text-center d-block">
+                <label>Exchange</label>
+                <select name="exchange" [(ngModel)]="searchModel.exchange" required class="custom-select my-1 mr-sm-2">
+          <option *ngFor="let exchange of exchanges" value="{{ exchange }}">{{
+            exchange
+          }}</option>
+        </select>
+            </div>
+            <div class="col-md-3 col-sm-4 text-center d-block">
+                <label>Limit</label>
+                <select name="limit" [(ngModel)]="searchModel.limit" required class="custom-select my-1 mr-sm-2">
+          <option *ngFor="let limit of limits" value="{{ limit * 10 }}">{{
+            limit * 10
+          }}</option>
+        </select>
+            </div>
+            <div class="col-md-3 col-sm-4 text-center">
+                <label class="invisible">Button</label>
+                <input (click)="searchCompany()" [disabled]="searchForm.form.invalid" type="button" class="d-block btn btn-primary" value="Search">
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <table class="table table-striped" *ngIf="companyList">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Symbol</th>
+                    <th>Currency</th>
+                    <th>Stock Exchange</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of companyList">
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.symbol }}</td>
+                    <td>{{ item.currency }}</td>
+                    <td>{{ item.stockExchange }}</td>
+                    <td>
+                        <button class="btn btn-primary" (click)="downloadStatement(item.symbol)">
+              Download Statement
+            </button>
+                        <!-- direct download csv from URL -->
+                        <!-- <a
+              download
+              href="https://financialmodelingprep.com/api/v3/income-statement/{{
+                item.symbol
+              }}?datatype=csv&apikey={{ apiKey }}"
+              >Download Statement 2</a
+            > -->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="col-md-12" *ngIf="!companyList">
+            <span>No data found</span>
+        </div>
+    </div>
+</div>
